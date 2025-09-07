@@ -4,7 +4,7 @@ class RBAnimal:
                 name: str | None = None,
                 age: int | None = None):
         self.id = id
-        self.king = kind
+        self.kind = kind
         self.name = name
         self.age = age
         

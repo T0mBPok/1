@@ -8,7 +8,6 @@ class GetAnimal(BaseModel):
     age: int
     
 class AddAnimal(BaseModel):
-    id: int
     kind: str
     name: str
     age: int
@@ -23,7 +22,6 @@ class AddAnimal(BaseModel):
         return cls(kind=kind, name=name, age=age)
     
 class UpdateAnimal(BaseModel):
-    id: int
     kind: str | None = None
     name: str | None = None
     age: int | None = None

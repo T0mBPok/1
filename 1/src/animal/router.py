@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Path
-from src.animal.schemas import GetAnimal, AddAnimal, DeleteAnimal, UpdateAnimal
+from src.animal.schemas import GetAnimal, AddAnimal, UpdateAnimal
 from src.animal.rb import RBAnimal
 from src.animal.logic import AnimalLogic
 
@@ -11,14 +11,15 @@ async def get_animal(request_body: RBAnimal = Depends()):
 
 @router.post('/', summary='Добавить животное', response_model = AddAnimal)
 async def add_animal(form_data: AddAnimal = Depends(AddAnimal.as_form)):
-    return await AnimalLogic.add(**form_data.to_dict())
+    return await AnimalLogic.add(**form_data.model_dump())
 
-@router.delete('/{id}', summary='Удалить животное', response_model = DeleteAnimal)
+@router.delete('/{id}', summary='Удалить животное')
 async def delete_animal(id: int = Path(..., gt=0)):
-    return await AnimalLogic.delete(id=id)
+    await AnimalLogic.delete(id=id)
+    return {'message': f'Данные о животном с id={id} успешно удалены!'}
 
-@router.put('/', summary = 'Обновить данные о животном', response_model = UpdateAnimal)
-async def update_animal(animal: UpdateAnimal):
-    new_info = animal.to_dict()
-    animal_id = new_info.pop('id')
-    return await AnimalLogic.update_animal(animal_id, **new_info)
+@router.put('/{id}', summary = 'Обновить данные о животном', response_model = UpdateAnimal)
+async def update_animal(animal: UpdateAnimal, id: int = Path(..., gt=0)):
+    new_info = animal.model_dump(exclude_unset=True)
+    await AnimalLogic.update_animal(id=id, **new_info)
+    return new_info
