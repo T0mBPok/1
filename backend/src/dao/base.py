@@ -1,7 +1,6 @@
 from src.database import with_session
 from sqlalchemy import exists, select, delete, update
 from sqlalchemy.exc import SQLAlchemyError
-from src.animal.models import Animal
 from fastapi import HTTPException, status
 
 
@@ -21,9 +20,9 @@ class BaseDAO:
         session.add(new_obj)
         try:
             await session.commit()
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             await session.rollback()
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"{e}")
         return new_obj
             
     @classmethod

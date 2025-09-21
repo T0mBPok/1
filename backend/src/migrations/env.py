@@ -8,7 +8,6 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 from src.database import Base, DATABASE_URL
-print(DATABASE_URL)
 from src.animal.models import Animal
 
 # this is the Alembic Config object, which provides

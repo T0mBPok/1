@@ -12,7 +12,7 @@ def with_session(func):
             return await func(*args, session=session, **kwargs)
     return wrapper
 
-#Ассоциации
+#Аннотации
 int_pk = Annotated[int, mapped_column(primary_key=True)]
 str_uniq = Annotated[str, mapped_column(unique=True, nullable=False)]
 
